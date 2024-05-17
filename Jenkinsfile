@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/ahmedosama1994/booking-app-testing.git'
+                git branch: 'main', url: 'https://github.com/ahmedosama1994/booking-app-testing.git'
             }
         }
 
