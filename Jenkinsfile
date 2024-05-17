@@ -3,8 +3,7 @@ pipeline {
 
     environment {
         NODE_ENV = 'production'
-        SONARQUBE_URL = 'http://your-sonarqube-server'
-        SONARQUBE_CREDENTIALS = 'your-sonarqube-credentials-id'
+    
     }
 
     stages {
