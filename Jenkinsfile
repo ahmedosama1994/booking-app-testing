@@ -19,7 +19,7 @@ pipeline {
                     // Install nvm and use the correct Node.js version
                     sh '''
                         export NVM_DIR="$HOME/.nvm"
-                        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
                         nvm install --lts
                         nvm use --lts
                         npm config set scripts-prepend-node-path true
@@ -33,7 +33,7 @@ pipeline {
                 dir("${WORKSPACE_DIR}") {
                     sh '''
                         export NVM_DIR="$HOME/.nvm"
-                        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
                         npm cache clean --force
                         npm install
                     '''
@@ -46,7 +46,7 @@ pipeline {
                 dir("${WORKSPACE_DIR}") {
                     sh '''
                         export NVM_DIR="$HOME/.nvm"
-                        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
                         npm run lint
                     '''
                 }
@@ -58,7 +58,7 @@ pipeline {
                 dir("${WORKSPACE_DIR}") {
                     sh '''
                         export NVM_DIR="$HOME/.nvm"
-                        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
                         npm test
                     '''
                 }
