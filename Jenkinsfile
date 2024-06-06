@@ -31,8 +31,10 @@ pipeline {
             steps {
                 script {
                     // Run ESLint
-                    
+                    dir("${WORKSPACE_DIR}") {
                     sh 'npm run lint'
+                }
+                    
                 }
             }
         }
