@@ -21,6 +21,7 @@ pipeline {
                         bat 'choco install nodejs-lts'
                     }
                 }
+                sh 'npm cache clean --force'
                 sh 'npm install'
             }
         }
@@ -29,6 +30,7 @@ pipeline {
             steps {
                 script {
                     // Run ESLint
+                    
                     sh 'npm run lint'
                 }
             }
