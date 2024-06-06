@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         NODE_ENV = 'production'
+        WORKSPACE_DIR = '/home/ahmed/app/github-app/booking-app'
     
     }
 
