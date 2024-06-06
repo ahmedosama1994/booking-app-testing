@@ -20,7 +20,7 @@ pipeline {
                     catchError {
                         // Install Node.js LTS version
                         sh "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash"
-                        sh "export NVM_DIR=\"$NVM_DIR\" && [ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\" && nvm install --lts"
+                        sh "export NVM_DIR=\"$NVM_DIR\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && nvm install --lts"
                         // Configure npm
                         sh "npm config set scripts-prepend-node-path true"
                     }
