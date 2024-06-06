@@ -18,12 +18,9 @@ pipeline {
             steps {
                 script {
                     catchError {
-                        // Source nvm.sh script
-                        sh "source $NVM_DIR/nvm.sh"
                         // Install Node.js LTS version
-                        sh "nvm install --lts"
-                        // Use Node.js LTS version
-                        sh "nvm use --lts"
+                        sh "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash"
+                        sh "export NVM_DIR=\"$NVM_DIR\" && [ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\" && nvm install --lts"
                         // Configure npm
                         sh "npm config set scripts-prepend-node-path true"
                     }
