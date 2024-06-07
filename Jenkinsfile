@@ -1,15 +1,18 @@
 pipeline {
     agent any
+
     environment {
         NODE_ENV = 'production'
     
     }
+
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/ahmedosama1994/booking-app-testing.git'
             }
         }
+
         stage('Install Dependencies') {
             steps {
                 script {
@@ -18,19 +21,19 @@ pipeline {
                         bat 'choco install nodejs-lts'
                     }
                 }
-                sh 'npm cache clean --force'
                 sh 'npm install'
             }
         }
-pipeline {
+
+        stage('Lint') {
             steps {
                 script {
                     // Run ESLint
-
                     sh 'npm run lint'
                 }
             }
         }
+
         stage('Test') {
             steps {
                 script {
@@ -40,7 +43,9 @@ pipeline {
                 junit 'test-results/*.xml' // Assuming Mocha outputs JUnit XML test results
             }
         }
+
         
+
         stage('Quality Gate') {
             steps {
                 script {
@@ -51,6 +56,7 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true
