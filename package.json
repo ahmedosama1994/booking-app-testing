@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint /home/ahmed/app/github-app/booking-app"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +14,12 @@
     "body-parser": "^1.20.2",
     "express": "^4.19.2",
     "mongoose": "^8.3.4"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.0.3",
+    "@eslint/js": "^9.4.0",
+    "eslint": "^8.0.0",
+    "globals": "^14.0.0",
+    "mocha": "^10.4.0"
   }
 }
