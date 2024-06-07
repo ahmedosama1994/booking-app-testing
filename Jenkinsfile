@@ -5,7 +5,6 @@ pipeline {
         NODE_ENV = 'production'
         WORKSPACE_DIR = '/home/ahmed/app/github-app/booking-app'
         NVM_DIR = '/home/ahmed/.nvm'
-    
     }
 
     stages {
@@ -15,38 +14,81 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Set Up Node.js and npm') {
             steps {
                 script {
-                    // Install Node.js and npm if not installed
-                    if (!isUnix()) {
-                        bat 'choco install nodejs-lts'
-                    }
+                    sh '''
+                        export NVM_DIR="$HOME/.nvm"
+                        if [ ! -d "$NVM_DIR" ]; then
+                            mkdir -p $NVM_DIR
+                            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+                        fi
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                        nvm install 20 # Using Node.js 20 which you have installed
+                        nvm use 20
+                        npm config set scripts-prepend-node-path true
+                    '''
                 }
-                sh 'npm install'
+            }
+        }
+
+        stage('Check Versions') {
+            steps {
+                script {
+                    sh '''
+                        export NVM_DIR="$HOME/.nvm"
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                        echo "NVM Version:"
+                        nvm --version
+                        echo "Node.js Version:"
+                        node -v
+                        echo "npm Version:"
+                        npm -v
+                    '''
+                }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                dir("${WORKSPACE_DIR}") {
+                    sh '''
+                        export NVM_DIR="$HOME/.nvm"
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                        nvm use 20
+                        npm cache clean --force
+                        npm install
+                    '''
+                }
             }
         }
 
         stage('Lint') {
             steps {
-                script {
-                    // Run ESLint
-                    sh 'npm run lint'
+                dir("${WORKSPACE_DIR}") {
+                    sh '''
+                        export NVM_DIR="$HOME/.nvm"
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                        nvm use 20
+                        npm run lint
+                    '''
                 }
             }
         }
 
         stage('Test') {
             steps {
-                script {
-                    // Run tests
-                    sh 'npm test'
+                dir("${WORKSPACE_DIR}") {
+                    sh '''
+                        export NVM_DIR="$HOME/.nvm"
+                        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                        nvm use 20
+                        npm test
+                    '''
                 }
                 junit 'test-results/*.xml' // Assuming Mocha outputs JUnit XML test results
             }
         }
-
-        
 
         stage('Quality Gate') {
             steps {
@@ -61,9 +103,11 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true
-            junit 'test-results/*.xml'
-            cleanWs()
+            dir("${WORKSPACE_DIR}") {
+                archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true
+                junit 'test-results/*.xml'
+                cleanWs()
+            }
         }
     }
 }
