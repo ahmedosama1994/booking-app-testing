@@ -22,7 +22,7 @@ pipeline {
                 sh 'npm install'
             }
         }
-@@ -29,6 +30,7 @@ pipeline {
+pipeline {
             steps {
                 script {
                     // Run ESLint
